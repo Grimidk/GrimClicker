@@ -1,0 +1,33 @@
+.head {
+    color:black; 
+    text-align:center;
+    line-height: 1.5;
+    background-color: powderblue;
+}
+
+.body {
+    color:black; 
+    text-align:center; 
+    line-height: 1.5;
+    background-color: powderblue;
+}
+
+.box {
+    background-color:white; 
+    text-align:center; 
+    line-height: 1.8;
+    width: 35px;
+    border-radius: 10px;
+}
+
+.grid3 {
+    color:black; 
+    text-align:center; 
+    line-height: 1.5;
+    padding-left: 45%;
+    padding-right: 45%;
+    background-color: powderblue;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(30px, auto);
+  }
