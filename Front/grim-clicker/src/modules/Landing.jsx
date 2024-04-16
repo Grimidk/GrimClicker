@@ -1,9 +1,8 @@
+import * as React from 'react'
 import { useState } from 'react'
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './App.css'
+import './../App.css'
 
-function App() {
+function Landing() {
   const [points, setPoints] = useState(0)
   const [clickLevel, setLevel] = useState(1)
   return (
@@ -14,4 +13,4 @@ function App() {
   )
 }
 
-export default App
+export default Landing
