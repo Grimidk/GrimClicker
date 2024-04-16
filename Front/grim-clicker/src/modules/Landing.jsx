@@ -6,11 +6,11 @@ import Header from './Header'
 function Landing() {
   const [points, setPoints] = useState(0)
   const [clickLevel, setClickLevel] = useState(1)
+  const upgradeCost = clickLevel * 10
 
   const upgrade = () => {
-    const cost = clickLevel * 10
-    if (points >= cost) {
-      setPoints(points - cost);
+    if (points >= upgradeCost) {
+      setPoints(points - upgradeCost);
       setClickLevel(clickLevel + 1); 
     }
   }
