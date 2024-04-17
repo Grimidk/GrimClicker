@@ -16,30 +16,49 @@ function Landing() {
   const cooldownUpgradeCost = (cooldownLevel) * 50;
 
   const reset = () => {
-    setPoints(0);
-    setClickLevel(1);
-    setAutoLevel(0);
-    setCooldownLevel(1);
+    let text = "Are you sure you want to reset?";
+    if (confirm(text) == true) {
+      setPoints(0);
+      setClickLevel(1);
+      setAutoLevel(0);
+      setCooldownLevel(1);
+      };
   };
 
+  const maxedOut = () => {
+    window.alert("Can't upgade anymore, Maxed out")
+  }
+
   const clickUpgrade = () => {
-    if (points >= clickUpgradeCost) {
-      setPoints(points => points - clickUpgradeCost);
-      setClickLevel(clickLevel => clickLevel + 1); 
+    if (clickLevel < 100) {
+      if (points >= clickUpgradeCost) {
+        setPoints(points => points - clickUpgradeCost);
+        setClickLevel(clickLevel => clickLevel + 1); 
+      }
+    } else {
+      maxedOut()
     }
   };
 
   const autoUpgrade = () => {
-    if (points >= autoUpgradeCost) {
-      setPoints(points => points - autoUpgradeCost);
-      setAutoLevel(autoLevel => autoLevel + 1); 
+    if (autoLevel < 100) {
+      if (points >= autoUpgradeCost) {
+        setPoints(points => points - autoUpgradeCost);
+        setAutoLevel(autoLevel => autoLevel + 1); 
+      }
+    } else {
+      maxedOut()
     }
   };
 
   const cooldownUpgrade = () => {
-    if (points >= cooldownUpgradeCost) {
-      setPoints(points => points - cooldownUpgradeCost);
-      setCooldownLevel(cooldownLevel => cooldownLevel + 1); 
+    if (cooldownLevel < 20) {
+      if (points >= cooldownUpgradeCost) {
+        setPoints(points => points - cooldownUpgradeCost);
+        setCooldownLevel(cooldownLevel => cooldownLevel + 1); 
+      }
+    } else {
+      maxedOut()
     }
   };
 
