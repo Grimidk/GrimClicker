@@ -8,7 +8,8 @@ function Landing() {
   const [clickLevel, setClickLevel] = useState(1);
   const [autoLevel, setAutoLevel] = useState(0);
   const [cooldownLevel, setCooldownLevel] = useState(1);
-  const cooldown = 1000/cooldownLevel
+
+  const cooldown =  Math.round(1000/cooldownLevel);
 
   const clickUpgradeCost = clickLevel * 10;
   const autoUpgradeCost = (autoLevel + 1 ) * 25;
@@ -49,14 +50,15 @@ function Landing() {
   return (
     <>
       <Header></Header>
+        <div className="indicator">Points per Second: {(autoLevel * clickLevel) * cooldownLevel}</div>
         <button className="button" id="mainClick" onClick={() => setPoints((points) => points + clickLevel)}>Points: {points}</button>
         <div className='shop'>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
-          <div>Cost: {clickUpgradeCost}</div>
-          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto Level: {autoLevel}</button>
-          <div>Cost: {autoUpgradeCost}</div>
-          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown Level: {cooldownLevel}</button>
-          <div>Cost: {cooldownUpgradeCost}</div>
+          <div className="indicator">Cost: {clickUpgradeCost}</div>
+          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto Clicker Level: {autoLevel}</button>
+          <div className="indicator">Cost: {autoUpgradeCost}</div>
+          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {cooldown} ms</button>
+          <div className="indicator">Cost: {cooldownUpgradeCost}</div>
         </div>
     </>
   )
