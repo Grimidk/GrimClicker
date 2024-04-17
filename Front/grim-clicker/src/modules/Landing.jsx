@@ -9,7 +9,7 @@ function Landing() {
   const [autoLevel, setAutoLevel] = useState(0);
   const [cooldownLevel, setCooldownLevel] = useState(1);
 
-  const cooldown =  Math.round(1000/cooldownLevel);
+  const cooldown =  Math.round(1000 / cooldownLevel);
 
   const clickUpgradeCost = clickLevel * 10;
   const autoUpgradeCost = (autoLevel + 1 ) * 25;
@@ -67,8 +67,7 @@ function Landing() {
       if (autoLevel > 0) {
         setPoints((prevPoints) => prevPoints + (autoLevel * clickLevel));
       }
-    }
-
+    };
     const intervalId = setInterval(autoClick, cooldown);
     return () => clearInterval(intervalId);
   }, [autoLevel]);
