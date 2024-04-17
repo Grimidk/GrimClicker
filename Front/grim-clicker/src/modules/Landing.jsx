@@ -15,6 +15,13 @@ function Landing() {
   const autoUpgradeCost = (autoLevel + 1 ) * 25;
   const cooldownUpgradeCost = (cooldownLevel) * 50;
 
+  const reset = () => {
+    setPoints(0);
+    setClickLevel(1);
+    setAutoLevel(0);
+    setCooldownLevel(1);
+  };
+
   const clickUpgrade = () => {
     if (points >= clickUpgradeCost) {
       setPoints(points => points - clickUpgradeCost);
@@ -55,10 +62,13 @@ function Landing() {
         <div className='shop'>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
           <div className="indicator">Cost: {clickUpgradeCost}</div>
-          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto Clicker Level: {autoLevel}</button>
+          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
           <div className="indicator">Cost: {autoUpgradeCost}</div>
           <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {cooldown} ms</button>
           <div className="indicator">Cost: {cooldownUpgradeCost}</div>
+        </div>
+        <div className="settings">
+          <button className="button" id="reset" onClick={reset}>Hard Reset</button>
         </div>
     </>
   )

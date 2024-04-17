@@ -10,9 +10,16 @@
 }
 
 .button {
+  margin: 2px;
 }
 
 .shop {
+  flex: none;
+  flex-wrap: nowrap;
+  margin-top: 12px;
+}
+
+.settings {
   flex: none;
   flex-wrap: nowrap;
   margin-top: 12px;
