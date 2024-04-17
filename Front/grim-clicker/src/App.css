@@ -9,6 +9,15 @@
   height: 1%;
 }
 
+.button {
+}
+
+.shop {
+  flex: none;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
