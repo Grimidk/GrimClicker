@@ -10,7 +10,6 @@ function Landing() {
   const [cooldownLevel, setCooldownLevel] = useState(1);
 
   const cooldown =  Math.round(1000 / cooldownLevel);
-
   const clickUpgradeCost = clickLevel * 10;
   const autoUpgradeCost = (autoLevel + 1 ) * 25;
   const cooldownUpgradeCost = (cooldownLevel) * 50;
