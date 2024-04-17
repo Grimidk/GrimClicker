@@ -26,7 +26,7 @@ function Landing() {
   };
 
   const maxedOut = () => {
-    window.alert("Can't upgade anymore, Maxed out")
+    window.alert("Can't upgrade anymore, Maxed out")
   }
 
   const clickUpgrade = () => {
