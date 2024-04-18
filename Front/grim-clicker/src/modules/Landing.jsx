@@ -39,16 +39,15 @@ function Landing() {
 
   const triggerUpgrades = (upgradeFunction, cost, level, maxLevel) => {
     const remainingUpgrades = Math.min(Math.floor(points / cost), maxLevel - level);
-    if (level == maxLevel){
+    if (level >= maxLevel) {
       window.alert("Can't upgrade anymore, Maxed out");
-    } else {
-      if (remainingUpgrades <= 0) {
-        return;
-      }
-      const upgradesToTrigger = Math.min(remainingUpgrades, 10);
-      for (let i = 0; i < upgradesToTrigger; i++) {
-        upgradeFunction();
-      };
+    }
+    if (remainingUpgrades <= 0) {
+      return;
+    }
+    const upgradesToTrigger = Math.min(remainingUpgrades, 10);
+    for (let i = 0; i < upgradesToTrigger; i++) {
+      upgradeFunction();
     };
   };
   
