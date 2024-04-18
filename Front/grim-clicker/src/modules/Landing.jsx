@@ -12,7 +12,7 @@ function Landing() {
   const cooldown =  Math.round(1000 / cooldownLevel);
   const clickUpgradeCost = clickLevel * 10;
   const autoUpgradeCost = (autoLevel + 1 ) * 25;
-  const cooldownUpgradeCost = (cooldownLevel) * 50;
+  const cooldownUpgradeCost = (cooldownLevel) * 100;
 
   const reset = () => {
     let text = "Are you sure you want to reset?";
