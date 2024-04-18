@@ -77,10 +77,10 @@ function Landing() {
     const savedAutoLevel = localStorage.getItem("AutoLevel");
     const savedCooldownLevel = localStorage.getItem("CooldownLevel");
   
-    if (!isNaN(savedPoints)) {setPoints(Number(savedPoints));};
-    if (!isNaN(savedClickLevel)) {setClickLevel(Number(savedClickLevel));};
-    if (!isNaN(savedAutoLevel)) {setAutoLevel(Number(savedAutoLevel));};
-    if (!isNaN(savedCooldownLevel)) {setCooldownLevel(Number(savedCooldownLevel));};
+    if (!isNaN(savedPoints) && savedPoints !== null) {setPoints(Number(savedPoints));};
+    if (!isNaN(savedClickLevel) && savedClickLevel !== null) {setClickLevel(Number(savedClickLevel));};
+    if (!isNaN(savedAutoLevel) && savedAutoLevel !== null) {setAutoLevel(Number(savedAutoLevel));};
+    if (!isNaN(savedCooldownLevel) && savedCooldownLevel !== null) {setCooldownLevel(Number(savedCooldownLevel));};
   
     console.log("Successfully Loaded!");
   }, []);
