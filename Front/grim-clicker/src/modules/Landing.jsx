@@ -127,6 +127,7 @@ function Landing() {
         <button className="button" id="save" onClick={saveData}>Save Data</button>
         <button className="button" id="reset" onClick={reset}>Hard Reset</button>
       </div>
+      <div className="credits">By GrimIDK, just for fun.</div>
     </>
   );
 }
