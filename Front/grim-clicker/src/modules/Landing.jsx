@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import './../App.css';
 
-const MAX_LEVEL_CLICK = 100;
-const MAX_LEVEL_AUTO = 100;
-const MAX_LEVEL_COOLDOWN = 20;
+const clickMaxLevel = 100;
+const autoMaxLevel = 100;
+const cooldownMaxLevel = 20;
 
 function Landing() {
   const [points, setPoints] = useState(0);
@@ -52,16 +52,38 @@ function Landing() {
   };
   
   const clickUpgrade = () => {
-    triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, MAX_LEVEL_CLICK), clickUpgradeCost, clickLevel, MAX_LEVEL_CLICK);
+    triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel), clickUpgradeCost, clickLevel, clickMaxLevel);
   };
 
   const autoUpgrade = () => {
-    triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, MAX_LEVEL_AUTO), autoUpgradeCost, autoLevel, MAX_LEVEL_AUTO);
+    triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel), autoUpgradeCost, autoLevel, autoMaxLevel);
   };
 
   const cooldownUpgrade = () => {
-    triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, MAX_LEVEL_COOLDOWN), cooldownUpgradeCost, cooldownLevel, MAX_LEVEL_COOLDOWN);
+    triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel), cooldownUpgradeCost, cooldownLevel, cooldownMaxLevel);
   };
+
+  const saveData = () => {
+    localStorage.setItem("Points", points);
+    localStorage.setItem("ClickLevel", clickLevel);
+    localStorage.setItem("AutoLevel", autoLevel);
+    localStorage.setItem("CooldownLevel", cooldownLevel);
+    console.log("Successfully Saved!");
+  };
+
+  useEffect(() => {
+    const savedPoints = localStorage.getItem("Points");
+    const savedClickLevel = localStorage.getItem("ClickLevel");
+    const savedAutoLevel = localStorage.getItem("AutoLevel");
+    const savedCooldownLevel = localStorage.getItem("CooldownLevel");
+  
+    if (!isNaN(savedPoints)) {setPoints(Number(savedPoints));};
+    if (!isNaN(savedClickLevel)) {setClickLevel(Number(savedClickLevel));};
+    if (!isNaN(savedAutoLevel)) {setAutoLevel(Number(savedAutoLevel));};
+    if (!isNaN(savedCooldownLevel)) {setCooldownLevel(Number(savedCooldownLevel));};
+  
+    console.log("Successfully Loaded!");
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -71,6 +93,11 @@ function Landing() {
     }, Math.round(1000 / cooldownLevel));
     return () => clearInterval(intervalId);
   }, [autoLevel, clickLevel, cooldownLevel]);
+
+  useEffect(() => {
+    const intervalId = setInterval(saveData, 60000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const pointsPerSecond = (autoLevel * clickLevel) * cooldownLevel;
 
@@ -82,21 +109,22 @@ function Landing() {
       <div className='shop'>
         <div>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, MAX_LEVEL_CLICK), clickUpgradeCost, clickLevel, MAX_LEVEL_CLICK)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel), clickUpgradeCost, clickLevel, clickMaxLevel)}>x10</button>
           <div className="indicator">Cost: {clickUpgradeCost}</div>
         </div>
         <div>
           <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, MAX_LEVEL_AUTO), autoUpgradeCost, autoLevel, MAX_LEVEL_AUTO)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel), autoUpgradeCost, autoLevel, autoMaxLevel)}>x10</button>
           <div className="indicator">Cost: {autoUpgradeCost}</div>
         </div>
         <div>
           <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {Math.round(1000 / cooldownLevel)} ms</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, MAX_LEVEL_COOLDOWN), cooldownUpgradeCost, cooldownLevel, MAX_LEVEL_COOLDOWN)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel), cooldownUpgradeCost, cooldownLevel, cooldownMaxLevel)}>x10</button>
           <div className="indicator">Cost: {cooldownUpgradeCost}</div>
         </div>
       </div>
       <div className="settings">
+        <button className="button" id="save" onClick={saveData}>Save Data</button>
         <button className="button" id="reset" onClick={reset}>Hard Reset</button>
       </div>
     </>
