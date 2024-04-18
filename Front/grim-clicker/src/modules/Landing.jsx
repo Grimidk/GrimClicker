@@ -1,7 +1,6 @@
-import * as React from 'react'
-import { useState, useEffect } from 'react'
-import './../App.css'
-import Header from './Header'
+import React, { useState, useEffect } from 'react';
+import Header from './Header';
+import './../App.css';
 
 function Landing() {
   const [points, setPoints] = useState(0);
@@ -9,86 +8,72 @@ function Landing() {
   const [autoLevel, setAutoLevel] = useState(0);
   const [cooldownLevel, setCooldownLevel] = useState(1);
 
-  const cooldown =  Math.round(1000 / cooldownLevel);
   const clickUpgradeCost = clickLevel * 10;
-  const autoUpgradeCost = (autoLevel + 1 ) * 25;
-  const cooldownUpgradeCost = (cooldownLevel) * 100;
+  const autoUpgradeCost = (autoLevel + 1) * 25;
+  const cooldownUpgradeCost = cooldownLevel * 100;
 
   const reset = () => {
-    let text = "Are you sure you want to reset?";
-    if (confirm(text) == true) {
+    const text = "Are you sure you want to reset?";
+    if (window.confirm(text)) {
       setPoints(0);
       setClickLevel(1);
       setAutoLevel(0);
       setCooldownLevel(1);
-      };
+    }
   };
 
-  const maxedOut = () => {
-    window.alert("Can't upgrade anymore, Maxed out")
-  }
-
-  const clickUpgrade = () => {
-    if (clickLevel < 100) {
-      if (points >= clickUpgradeCost) {
-        setPoints(points => points - clickUpgradeCost);
-        setClickLevel(clickLevel => clickLevel + 1); 
+  const upgrade = (level, cost, setLevel, maxLevel) => {
+    if (level < maxLevel) {
+      if (points >= cost) {
+        setPoints(prevPoints => prevPoints - cost);
+        setLevel(level => level + 1);
       }
     } else {
-      maxedOut()
+      window.alert("Can't upgrade anymore, Maxed out");
     }
+  };
+
+  const clickUpgrade = () => {
+    upgrade(clickLevel, clickUpgradeCost, setClickLevel, 100);
   };
 
   const autoUpgrade = () => {
-    if (autoLevel < 100) {
-      if (points >= autoUpgradeCost) {
-        setPoints(points => points - autoUpgradeCost);
-        setAutoLevel(autoLevel => autoLevel + 1); 
-      }
-    } else {
-      maxedOut()
-    }
+    upgrade(autoLevel, autoUpgradeCost, setAutoLevel, 100);
   };
 
   const cooldownUpgrade = () => {
-    if (cooldownLevel < 20) {
-      if (points >= cooldownUpgradeCost) {
-        setPoints(points => points - cooldownUpgradeCost);
-        setCooldownLevel(cooldownLevel => cooldownLevel + 1); 
-      }
-    } else {
-      maxedOut()
-    }
+    upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, 20);
   };
 
   useEffect(() => {
-    function autoClick() {
+    const intervalId = setInterval(() => {
       if (autoLevel > 0) {
-        setPoints((prevPoints) => prevPoints + (autoLevel * clickLevel));
+        setPoints(prevPoints => prevPoints + (autoLevel * clickLevel));
       }
-    };
-    const intervalId = setInterval(autoClick, cooldown);
+    }, Math.round(1000 / cooldownLevel));
     return () => clearInterval(intervalId);
-  }, [autoLevel]);
+  }, [autoLevel, clickLevel, cooldownLevel]);
+
+  const pointsPerSecond = (autoLevel * clickLevel) * cooldownLevel;
 
   return (
     <>
-      <Header></Header>
-        <div className="indicator">Points per Second: {(autoLevel * clickLevel) * cooldownLevel}</div>
-        <button className="button" id="mainClick" onClick={() => setPoints((points) => points + clickLevel)}>Points: {points}</button>
-        <div className='shop'>
-          <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
-          <div className="indicator">Cost: {clickUpgradeCost}</div>
-          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
-          <div className="indicator">Cost: {autoUpgradeCost}</div>
-          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {cooldown} ms</button>
-          <div className="indicator">Cost: {cooldownUpgradeCost}</div>
-        </div>
-        <div className="settings">
-          <button className="button" id="reset" onClick={reset}>Hard Reset</button>
-        </div>
+      <Header />
+      <div className="indicator">Points per Second: {pointsPerSecond}</div>
+      <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>Points: {points}</button>
+      <div className='shop'>
+        <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
+        <div className="indicator">Cost: {clickUpgradeCost}</div>
+        <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
+        <div className="indicator">Cost: {autoUpgradeCost}</div>
+        <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {Math.round(1000 / cooldownLevel)} ms</button>
+        <div className="indicator">Cost: {cooldownUpgradeCost}</div>
+      </div>
+      <div className="settings">
+        <button className="button" id="reset" onClick={reset}>Hard Reset</button>
+      </div>
     </>
-  )
+  );
 }
 
-export default Landing
+export default Landing;
