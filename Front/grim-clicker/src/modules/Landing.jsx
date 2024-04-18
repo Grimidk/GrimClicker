@@ -45,7 +45,7 @@ function Landing() {
     if (remainingUpgrades <= 0) {
       return;
     }
-    const upgradesToTrigger = Math.min(remainingUpgrades, 10);
+    const upgradesToTrigger = Math.min(remainingUpgrades, maxLevel);
     for (let i = 0; i < upgradesToTrigger; i++) {
       upgradeFunction();
     };
@@ -109,17 +109,17 @@ function Landing() {
       <div className='shop'>
         <div>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel), clickUpgradeCost, clickLevel, clickMaxLevel)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel), clickUpgradeCost, clickLevel, clickMaxLevel)}>Max</button>
           <div className="indicator">Cost: {clickUpgradeCost}</div>
         </div>
         <div>
           <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel), autoUpgradeCost, autoLevel, autoMaxLevel)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel), autoUpgradeCost, autoLevel, autoMaxLevel)}>Max</button>
           <div className="indicator">Cost: {autoUpgradeCost}</div>
         </div>
         <div>
           <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {Math.round(1000 / cooldownLevel)} ms</button>
-          <button className="button" onClick={() => triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel), cooldownUpgradeCost, cooldownLevel, cooldownMaxLevel)}>x10</button>
+          <button className="button" onClick={() => triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel), cooldownUpgradeCost, cooldownLevel, cooldownMaxLevel)}>Max</button>
           <div className="indicator">Cost: {cooldownUpgradeCost}</div>
         </div>
       </div>
