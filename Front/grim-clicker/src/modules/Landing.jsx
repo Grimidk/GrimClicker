@@ -71,6 +71,11 @@ function Landing() {
     console.log("Successfully Saved!");
   };
 
+  const [lang, setLang] = useState(true);
+  const handleToggle = () => {
+    setLang(prevLang => !prevLang);
+  };
+
   useEffect(() => {
     const savedPoints = localStorage.getItem("Points");
     const savedClickLevel = localStorage.getItem("ClickLevel");
@@ -104,30 +109,31 @@ function Landing() {
   return (
     <>
       <Header />
-      <div className="indicator">Points per Second: {pointsPerSecond}</div>
-      <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>Points: {points}</button>
+      <div className="indicator">{lang ? 'Points per Second: ' : 'Puntos por Segundo: '} {pointsPerSecond}</div>
+      <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>{lang ? 'Points: ' : 'Puntos: '} {points}</button>
       <div className='shop'>
         <div>
-          <button className="button" id="clickUpgrade" onClick={clickUpgrade}>Click Level: {clickLevel}</button>
+          <button className="button" id="clickUpgrade" onClick={clickUpgrade}>{lang ? 'Click Level: ' : 'Nivel Click: '} {clickLevel}</button>
           <button className="button" onClick={() => triggerUpgrades(() => upgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel), clickUpgradeCost, clickLevel, clickMaxLevel)}>Max</button>
-          <div className="indicator">Cost: {clickUpgradeCost}</div>
+          <div className="indicator">{lang ? 'Cost: ' : 'Precio: '} {clickUpgradeCost}</div>
         </div>
         <div>
-          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>Auto-Clicker Level: {autoLevel}</button>
+          <button className="button" id="autoUpgrade" onClick={autoUpgrade}>{lang ? 'Auto-Click Level: ' : 'Nivel Auto-Click: '} {autoLevel}</button>
           <button className="button" onClick={() => triggerUpgrades(() => upgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel), autoUpgradeCost, autoLevel, autoMaxLevel)}>Max</button>
-          <div className="indicator">Cost: {autoUpgradeCost}</div>
+          <div className="indicator">{lang ? 'Cost: ' : 'Precio: '} {autoUpgradeCost}</div>
         </div>
         <div>
-          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>Cooldown: {Math.round(1000 / cooldownLevel)} ms</button>
+          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>{lang ? 'Delay: ' : 'Espera: '} {Math.round(1000 / cooldownLevel)} ms</button>
           <button className="button" onClick={() => triggerUpgrades(() => upgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel), cooldownUpgradeCost, cooldownLevel, cooldownMaxLevel)}>Max</button>
-          <div className="indicator">Cost: {cooldownUpgradeCost}</div>
+          <div className="indicator">{lang ? 'Cost: ' : 'Precio: '} {cooldownUpgradeCost}</div>
         </div>
       </div>
       <div className="settings">
-        <button className="button" id="save" onClick={saveData}>Save Data</button>
-        <button className="button" id="reset" onClick={reset}>Hard Reset</button>
+        <button className="button" id="save" onClick={saveData}>{lang ? 'Save Game' : 'Guardar Partida'}</button>
+        <button className="button" id="lang" onClick={handleToggle}>{lang ? 'Change Language' : 'Cambiar Lenguage'}</button>
+        <button className="button" id="reset" onClick={reset}>{lang ? 'Hard Reset' : 'Reinicio Duro'}</button>
       </div>
-      <div className="credits">By GrimIDK, just for fun.</div>
+      <div className="credits">{lang ? 'By GrimIDK, just for fun.' : 'Por GrimIDK, por que puedo.'}</div>
     </>
   );
 }
