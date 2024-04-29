@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './../App.css';
 
-const clickMaxLevel = 100;
-const autoMaxLevel = 100;
-const interestMaxLevel = 50;
-const cooldownMaxLevel = 20;
+//Max Levels
+const clickMaxLevel = 500;
+const autoMaxLevel = 200;
+const interestMaxLevel = 20;
+const cooldownMaxLevel = 10;
 
+//Main 
 function Landing() {
+
+  //Default Status
   const [lang, setLang] = useState(true);
   const [points, setPoints] = useState(0);
   const [clickLevel, setClickLevel] = useState(1);
@@ -14,6 +18,7 @@ function Landing() {
   const [interestLevel, setInterestLevel] = useState(0);
   const [cooldownLevel, setCooldownLevel] = useState(1);
 
+  //Language Strings
   const langStrings = {
     pointsPerSecondLabel: lang ? 'Points per Second: ' : 'Puntos por Segundo: ',
     pointsLabel: lang ? 'Points: ' : 'Puntos: ',
@@ -32,11 +37,13 @@ function Landing() {
     buyMaxLabel: lang ? 'Buy Max' : 'Comprar Maximo',
   };
 
-  const clickUpgradeCost = (level) => {return level * 15};
-  const autoUpgradeCost = (level) => {return (level + 1) * 45};
-  const interestUpgradeCost = (level) => {return (level + 1) * 120};
-  const cooldownUpgradeCost = (level) => {return level * 500};
+  //Cost Functions
+  const clickUpgradeCost = (level) => {return level * 10};
+  const autoUpgradeCost = (level) => {return (level + 1) * 50};
+  const interestUpgradeCost = (level) => {return (level + 1) * 1500};
+  const cooldownUpgradeCost = (level) => {return level * 5000};
 
+  //Hard Reset
   const reset = () => {
     if (window.confirm(langStrings.hardResetAlert)) {
       setPoints(0);
@@ -47,6 +54,7 @@ function Landing() {
     }
   };
 
+  //Upgrade Handlers
   const upgrade = (level, cost, setLevel, maxLevel) => {
     if (level < maxLevel) {
       if (points >= cost) {
@@ -57,61 +65,59 @@ function Landing() {
       window.alert(langStrings.maxedOutAlert);
     }
   };
-
   const maxUpgrade = (level, costFunction, setLevel, maxLevel) => {
     if (level >= maxLevel) {
       window.alert(langStrings.maxedOutAlert);
       return;
     }
-  
     let totalCost = 0;
     let currentLevel = level;
-  
     while (currentLevel < maxLevel && totalCost + costFunction(currentLevel) <= points) {
       totalCost += costFunction(currentLevel);
       currentLevel++;
     }
-  
     setPoints(prevPoints => prevPoints - totalCost);
     setLevel(currentLevel);
   };
-  
+
+  //Main Click Upgredes
   const clickUpgrade = () => {
     upgrade(clickLevel, clickUpgradeCost(clickLevel), setClickLevel, clickMaxLevel);
   };
-
   const clickMaxUpgrade = () => {
     maxUpgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel);
   };
 
+  //Auto Click Upgrades
   const autoUpgrade = () => {
     upgrade(autoLevel, autoUpgradeCost(autoLevel), setAutoLevel, autoMaxLevel);
   };
-
   const autoMaxUpgrade = () => {
     maxUpgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel);
   };
 
+  //Interest Upgrades
   const interestUpgrade = () => {
     upgrade(interestLevel, interestUpgradeCost(interestLevel), setInterestLevel, interestMaxLevel);
   };
-
   const interestMaxUpgrade = () => {
     maxUpgrade(interestLevel, interestUpgradeCost, setInterestLevel, interestMaxLevel);
   };
 
+  //Cooldown Upgrades
   const cooldownUpgrade = () => {
     upgrade(cooldownLevel, cooldownUpgradeCost(cooldownLevel), setCooldownLevel, cooldownMaxLevel);
   };
-
   const cooldownMaxUpgrade = () => {
     maxUpgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel);
   };
 
+  //Language Toggle
   const toggleLang = () => {
     setLang(prevLang => !prevLang);
   };
 
+  //Save
   const saveData = () => {
     const dataToSave = {
       Points: points,
@@ -125,7 +131,8 @@ function Landing() {
     }
     console.log("Successfully Saved!");
   };
-  
+
+  //Auto Load
   useEffect(() => {
     const keysToLoad = ["Points", "ClickLevel", "AutoLevel", "InterestLevel", "CooldownLevel"];
     const loadedData = keysToLoad.reduce((acc, key) => {
@@ -135,7 +142,6 @@ function Landing() {
       }
       return acc;
     }, {});
-    
     Object.keys(loadedData).forEach((key) => {
       switch (key) {
         case "Points":
@@ -170,30 +176,35 @@ function Landing() {
     return () => clearInterval(intervalId);
   }, [clickLevel, autoLevel, cooldownLevel]);
 
-  // //Compound Interest
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (interestLevel > 0) {
-  //       setPoints(prevPoints => Math.round(prevPoints * (1 + interestLevel/100) * 100)/100);
-  //     }
-  //   }, Math.round(1000 / cooldownLevel));
-  //   return () => clearInterval(intervalId);
-  // }, [clickLevel, interestLevel, cooldownLevel]);
+  //Compound Interest
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (interestLevel > 0) {
+        setPoints(prevPoints => prevPoints + Math.round(prevPoints * (interestLevel/1000)));
+      }
+    }, Math.round(1000 / cooldownLevel));
+    return () => clearInterval(intervalId);
+  }, [clickLevel, interestLevel, cooldownLevel]);
 
+  //Auto Save
   useEffect(() => {
     const intervalId = setInterval(saveData, 30000);
     return () => clearInterval(intervalId);
   }, [points, clickLevel, autoLevel, interestLevel, cooldownLevel]);
 
-  const pointsPerSecond = ((autoLevel * clickLevel) * cooldownLevel) //+ ((Math.round(points * (1 + interestLevel/100) * 100)/100) * cooldownLevel);
+  //Stats
+  const autoClickPerSecond = ((autoLevel * clickLevel) * cooldownLevel);
+  const interestPerSecond = (Math.round(interestLevel/1000 * points)) * cooldownLevel;
+  const pointsPerSecond = autoClickPerSecond + interestPerSecond;
 
+  //Return
   return (
     <>
       <section className="header">
         <h1>Grim Clicker</h1>
       </section>
       <div className="indicator">{langStrings.pointsPerSecondLabel} {pointsPerSecond}</div>
-      <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>{langStrings.pointsLabel} {Math.round(points * 100)/100}</button>
+      <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>{langStrings.pointsLabel} {Math.round(points)}</button>
       <section className="shop">
         <div>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>{langStrings.clickLevelLabel} {clickLevel}</button>
@@ -205,13 +216,13 @@ function Landing() {
           <button className="button" onClick={autoMaxUpgrade}>{langStrings.buyMaxLabel}</button>
           <div className="indicator">{langStrings.costLabel} {autoUpgradeCost(autoLevel)}</div>
         </div>
-        {/* <div>
-          <button className="button" id="interestUpgrade" onClick={interestUpgrade}>{langStrings.interestLevelLabel} {interestLevel}%</button>
+        <div>
+          <button className="button" id="interestUpgrade" onClick={interestUpgrade}>{langStrings.interestLevelLabel} {interestLevel/10}%</button>
           <button className="button" onClick={interestMaxUpgrade}>{langStrings.buyMaxLabel}</button>
           <div className="indicator">{langStrings.costLabel} {interestUpgradeCost(interestLevel)}</div>
-        </div> */}
+        </div>
         <div>
-          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>{langStrings.cooldownLevelLabel} {Math.round((1000 / cooldownLevel) * 100 ) / 100} ms</button>
+          <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>{langStrings.cooldownLevelLabel} {Math.round((1000 / cooldownLevel))} ms</button>
           <button className="button" onClick={cooldownMaxUpgrade}>{langStrings.buyMaxLabel}</button>
           <div className="indicator">{langStrings.costLabel} {cooldownUpgradeCost(cooldownLevel)}</div>
         </div>
