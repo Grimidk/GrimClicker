@@ -2,10 +2,20 @@ import React, { useState, useEffect } from "react";
 import "./../App.css";
 
 //Max Levels
-const clickMaxLevel = 500;
-const autoMaxLevel = 200;
-const interestMaxLevel = 20;
-const cooldownMaxLevel = 10;
+const maxLevels = {
+  click: 500,
+  auto: 200,
+  interest: 20,
+  cooldown: 10,
+}
+
+//Cost Functions
+const costFunctions = {
+  click: (level) => {return level * 10},
+  auto: (level) => {return (level + 1) * 50},
+  interest: (level) => {return (level + 1) * 1500},
+  cooldown: (level) => {return level * 5000},
+}
 
 //Main 
 function Landing() {
@@ -30,7 +40,7 @@ function Landing() {
     cooldownLevelLabel: lang ? "Delay: " : "Espera: ",
     costLabel: lang ? "Cost: " : "Precio: ",
     saveGameLabel: lang ? "Save Game" : "Guardar Partida",
-    changeLanguageLabel: lang ? "Change Language" : "Cambiar Lenguage",
+    changeLanguageLabel: lang ? "Change Language" : "Cambiar Lenguaje",
     maxedOutAlert: lang ? "Can't upgrade anymore, Maxed out" : "No se puede mejorar mas, Nivel maximo",
     hardResetLabel: lang ? "Hard Reset" : "Reinicio Duro",
     hardResetAlert: lang ? "Are you sure you want to reset?" : "Seguro que quieres reiniciar?",
@@ -39,12 +49,6 @@ function Landing() {
     buyMaxLabel: lang ? "Buy Max" : "Comprar Maximo",
     infinity: lang ? "Infinity" : "Infinitos",
   };
-
-  //Cost Functions
-  const clickUpgradeCost = (level) => {return level * 10};
-  const autoUpgradeCost = (level) => {return (level + 1) * 50};
-  const interestUpgradeCost = (level) => {return (level + 1) * 1500};
-  const cooldownUpgradeCost = (level) => {return level * 5000};
 
   //Hard Reset
   const reset = () => {
@@ -85,34 +89,34 @@ function Landing() {
 
   //Main Click Upgredes
   const clickUpgrade = () => {
-    upgrade(clickLevel, clickUpgradeCost(clickLevel), setClickLevel, clickMaxLevel);
+    upgrade(clickLevel, costFunctions.click(clickLevel), setClickLevel, maxLevels.click);
   };
   const clickMaxUpgrade = () => {
-    maxUpgrade(clickLevel, clickUpgradeCost, setClickLevel, clickMaxLevel);
+    maxUpgrade(clickLevel, costFunctions.click, setClickLevel, maxLevels.click);
   };
 
   //Auto Click Upgrades
   const autoUpgrade = () => {
-    upgrade(autoLevel, autoUpgradeCost(autoLevel), setAutoLevel, autoMaxLevel);
+    upgrade(autoLevel, costFunctions.auto(autoLevel), setAutoLevel, maxLevels.auto);
   };
   const autoMaxUpgrade = () => {
-    maxUpgrade(autoLevel, autoUpgradeCost, setAutoLevel, autoMaxLevel);
+    maxUpgrade(autoLevel, costFunctions.auto, setAutoLevel, maxLevels.auto);
   };
 
   //Interest Upgrades
   const interestUpgrade = () => {
-    upgrade(interestLevel, interestUpgradeCost(interestLevel), setInterestLevel, interestMaxLevel);
+    upgrade(interestLevel, costFunctions.interest(interestLevel), setInterestLevel, maxLevels.interest);
   };
   const interestMaxUpgrade = () => {
-    maxUpgrade(interestLevel, interestUpgradeCost, setInterestLevel, interestMaxLevel);
+    maxUpgrade(interestLevel, costFunctions.interest, setInterestLevel, maxLevels.interest);
   };
 
   //Cooldown Upgrades
   const cooldownUpgrade = () => {
-    upgrade(cooldownLevel, cooldownUpgradeCost(cooldownLevel), setCooldownLevel, cooldownMaxLevel);
+    upgrade(cooldownLevel, costFunctions.cooldown(cooldownLevel), setCooldownLevel, maxLevels.cooldown);
   };
   const cooldownMaxUpgrade = () => {
-    maxUpgrade(cooldownLevel, cooldownUpgradeCost, setCooldownLevel, cooldownMaxLevel);
+    maxUpgrade(cooldownLevel, costFunctions.cooldown, setCooldownLevel, maxLevels.cooldown);
   };
 
   //Language Toggle
@@ -214,24 +218,24 @@ function Landing() {
       <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>{langStrings.pointsLabel} {Math.round(points)}</button>
       <section className="shop">
         <div>
+          <div className="indicator">{langStrings.costLabel} {costFunctions.click(clickLevel)}</div>
           <button className="button" id="clickUpgrade" onClick={clickUpgrade}>{langStrings.clickLevelLabel} {clickLevel}</button>
           <button className="button" onClick={clickMaxUpgrade}>{langStrings.buyMaxLabel}</button>
-          <div className="indicator">{langStrings.costLabel} {clickUpgradeCost(clickLevel)}</div>
         </div>
         <div>
+          <div className="indicator">{langStrings.costLabel} {costFunctions.auto(autoLevel)}</div>
           <button className="button" id="autoUpgrade" onClick={autoUpgrade}>{langStrings.autoClickLevelLabel} {autoLevel}</button>
           <button className="button" onClick={autoMaxUpgrade}>{langStrings.buyMaxLabel}</button>
-          <div className="indicator">{langStrings.costLabel} {autoUpgradeCost(autoLevel)}</div>
         </div>
         <div>
+          <div className="indicator">{langStrings.costLabel} {costFunctions.interest(interestLevel)}</div>
           <button className="button" id="interestUpgrade" onClick={interestUpgrade}>{langStrings.interestLevelLabel} {interestLevel/10}%</button>
           <button className="button" onClick={interestMaxUpgrade}>{langStrings.buyMaxLabel}</button>
-          <div className="indicator">{langStrings.costLabel} {interestUpgradeCost(interestLevel)}</div>
         </div>
         <div>
+          <div className="indicator">{langStrings.costLabel} {costFunctions.cooldown(cooldownLevel)}</div>
           <button className="button" id="cooldownUpgrade" onClick={cooldownUpgrade}>{langStrings.cooldownLevelLabel} {Math.round((1000 / cooldownLevel))} ms</button>
           <button className="button" onClick={cooldownMaxUpgrade}>{langStrings.buyMaxLabel}</button>
-          <div className="indicator">{langStrings.costLabel} {cooldownUpgradeCost(cooldownLevel)}</div>
         </div>
       </section>
       <section className="settings">
