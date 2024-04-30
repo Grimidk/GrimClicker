@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './../App.css';
+import React, { useState, useEffect } from "react";
+import "./../App.css";
 
 //Max Levels
 const clickMaxLevel = 500;
@@ -20,21 +20,24 @@ function Landing() {
 
   //Language Strings
   const langStrings = {
-    pointsPerSecondLabel: lang ? 'Points per Second: ' : 'Puntos por Segundo: ',
-    pointsLabel: lang ? 'Points: ' : 'Puntos: ',
-    clickLevelLabel: lang ? 'Click Level: ' : 'Nivel Click: ',
-    autoClickLevelLabel: lang ? 'Auto-Click Level: ' : 'Nivel Auto-Click: ',
-    interestLevelLabel: lang ? 'Compound Interest: ' : 'Interes Compuesto: ',
-    cooldownLevelLabel: lang ? 'Delay: ' : 'Espera: ',
-    costLabel: lang ? 'Cost: ' : 'Precio: ',
-    saveGameLabel: lang ? 'Save Game' : 'Guardar Partida',
-    changeLanguageLabel: lang ? 'Change Language' : 'Cambiar Lenguage',
+    pointsPerSecondLabel: lang ? "Points per Second: " : "Puntos por Segundo: ",
+    autoPointsPerSecondLabel: lang ? "Auto-Click Points per Second: " : "Puntos por Segundo por Auto-Click: ",
+    interestPerSecondLabel: lang ? "Interest Points per Second: " : "Puntos por Segundo por Interes: ",
+    pointsLabel: lang ? "Points: " : "Puntos: ",
+    clickLevelLabel: lang ? "Click Level: " : "Nivel Click: ",
+    autoClickLevelLabel: lang ? "Auto-Click Level: " : "Nivel Auto-Click: ",
+    interestLevelLabel: lang ? "Compound Interest: " : "Interes Compuesto: ",
+    cooldownLevelLabel: lang ? "Delay: " : "Espera: ",
+    costLabel: lang ? "Cost: " : "Precio: ",
+    saveGameLabel: lang ? "Save Game" : "Guardar Partida",
+    changeLanguageLabel: lang ? "Change Language" : "Cambiar Lenguage",
     maxedOutAlert: lang ? "Can't upgrade anymore, Maxed out" : "No se puede mejorar mas, Nivel maximo",
-    hardResetLabel: lang ? 'Hard Reset' : 'Reinicio Duro',
+    hardResetLabel: lang ? "Hard Reset" : "Reinicio Duro",
     hardResetAlert: lang ? "Are you sure you want to reset?" : "Seguro que quieres reiniciar?",
-    creditsLabel: lang ? 'By GrimIDK, just for fun.' : 'Por GrimIDK, por que puedo.',
-    buyLabel: lang ? 'Buy' : 'Comprar',
-    buyMaxLabel: lang ? 'Buy Max' : 'Comprar Maximo',
+    creditsLabel: lang ? "By GrimIDK, just for fun." : "Por GrimIDK, por que puedo.",
+    buyLabel: lang ? "Buy" : "Comprar",
+    buyMaxLabel: lang ? "Buy Max" : "Comprar Maximo",
+    infinity: lang ? "Infinity" : "Infinitos",
   };
 
   //Cost Functions
@@ -203,7 +206,11 @@ function Landing() {
       <section className="header">
         <h1>Grim Clicker</h1>
       </section>
-      <div className="indicator">{langStrings.pointsPerSecondLabel} {pointsPerSecond}</div>
+      <section className="stats">
+        {/* <div className="indicator">{langStrings.pointsPerSecondLabel} {autoClickPerSecond}</div>
+        <div className="indicator">{langStrings.pointsPerSecondLabel} {interestPerSecond}</div> */}
+        <div className="indicator">{langStrings.pointsPerSecondLabel} {pointsPerSecond}</div>
+      </section>
       <button className="button" id="mainClick" onClick={() => setPoints(prevPoints => prevPoints + clickLevel)}>{langStrings.pointsLabel} {Math.round(points)}</button>
       <section className="shop">
         <div>
